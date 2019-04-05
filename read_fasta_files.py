@@ -6,25 +6,36 @@ Upload csv file with the fasta file names.
 Each file is used to generate two csv files listing:
  1. Host-virus proteins
  2. Human proteins
+Fasta files must be saved in the same path that is 
+entered for creation of above csv files.
 
 @author: debomita
+
 """
 import csv
 import pandas as pd
 from tkinter import Tk
-from tkinter import filedialog
+#from tkinter import filedialog
+from tkinter.filedialog import askopenfilename
 
 Tk().withdraw()
-source_file = askopenfilename()
+# Upload csv file with list of fasta file names
+source_file = askopenfilename(title = 'Upload list of fasta filenames',filetypes = (("csv files","*.csv"),("all files","*.*")))
 print(source_file)
 
-dest_path = filedialog.askdirectory()
+# Get destination path for creation of .csv files
+dest_path = filedialog.askdirectory(title = 'Enter path for file generation')
 
 fasta_fn = open(source_file)
+
+# Get list of fasta file names
 file_list = fasta_fn.readlines()
+
+gen_file = [] # Initialize a list to hold the names of all human protein files generated
+
 for file_name in file_list:
 
-    f = open(file_name[:-1]) #reading fasta file
+    f = open(dest_path+'/'+file_name[:-1]) #reading fasta file
     lines = f.readlines()
     
     newlines = []
@@ -53,10 +64,14 @@ for file_name in file_list:
     
     host_vir_file   = file_name[:-4]+'_host.csv'           
     human_prot_file = file_name[:-4]+'_human.csv'
-    
+    if human_prot_file != []:
+        gen_file.append(human_prot_file) #addin human protein file names
     
     #storing dataframe into csv file
-    df.to_csv(dest_path+'/'+host_vir_file, index=False, header=False)           
-    df1.to_csv(dest_path+'/'+human_prot_file, index=False, header=False)
+    df.to_csv(dest_path+'/'+host_vir_file, index=False, header=True)           
+    df1.to_csv(dest_path+'/'+human_prot_file, index=False, header=True)
     
-print("Finished creation of files.")
+    df2 = pd.DataFrame({'fname':gen_file})
+    df2.to_csv(dest_path+'/gen_file_list.csv', index=False, header=True)
+  
+print("Finished creation of files.\n")
