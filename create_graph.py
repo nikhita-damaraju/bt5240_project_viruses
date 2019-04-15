@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Apr  1 10:58:47 2019
-The <virus>_human.csv files listed in gen_file_list.csv
-should be saved in the 'Home' folder.
-A log file with the name 'subgraph_except.log' will be
-created/updated with the exceptions that happen during
-subgraph generation.
+The <virus>_human.csv files listed in gen_file_list.csv should be 
+saved in the same folder as gen_file_list.csv.
+
+A log file with the name 'subgraph_except.log' will be created/
+updated with the exceptions that happen during subgraph generation.
+
+Ego graph details for each <virus>_human.csv file will be saved in a
+.csv file in the same path as the <virus>_human.csv file.
 
 @author: debomita
 
@@ -16,7 +19,6 @@ import sys
 import pandas as pd
 import networkx as nx
 from tkinter import Tk
-#from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 import logging
 
@@ -55,13 +57,14 @@ print(nx.info(G))
 
 #********************Constructing the subgraph*********************************
 
+ego_edgelist = []
 # Read file containing file names (<virus>_human.csv)
 sub_fnames = pd.read_csv(subgraph_file)
 sub_fnames1 = [row['fname'] for index, row in sub_fnames.iterrows()]
 for sub_line in sub_fnames1:  
 
     # Get node list from column 1 of file
-   sub_node_list = pd.read_csv(sub_line, usecols=[0])
+   sub_node_list = pd.read_csv(subgraph_file[:-17]+sub_line, usecols=[0])
    sub_node_list1 = [row['prot_id'] for index, row in sub_node_list.iterrows()]
     # Initialize subgraph
    G_sub = nx.Graph() 
@@ -78,5 +81,14 @@ for sub_line in sub_fnames1:
            pass
        # Take union of the subgraphs generated for each node in the file              
        G_sub = nx.compose(G_sub,G_sub_i)
+   # List ego graph edgelist    
+   ego_edgelist = G_sub.edges
+   
+   # Save ego graph details for each <virus>_human.csv file into a .csv file
+   dataf = pd.DataFrame({'edges':ego_edgelist})
+   
+
+   dataf.to_csv(subgraph_file[:-17]+sub_line[:-9]+'egoedges.csv', index = False, header = True)
+   
    # Print the info for subgraphs of each file
    print("Subgraph_"+sub_line[:-4],nx.info(G_sub))
