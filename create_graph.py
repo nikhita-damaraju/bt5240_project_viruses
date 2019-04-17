@@ -31,17 +31,10 @@ print(source_file)
 subgraph_file = askopenfilename(title = 'Upload "gen_file_list.csv"',filetypes = (("csv files","*.csv"),("all files","*.*")))
 print(subgraph_file)
 
-
+# Read Human PPI file
 file = pd.read_csv(source_file, sep = " ")
 # Filter out PPIs with combined_score >= 900
 file = file[file["combined_score"]>=900]
-# Initialize list for holding node data of human PPI graph
-nodelist = []
-
-# Get proteins from columns 1 and 2 of human PPI file into the node list
-for col in ['protein1', 'protein2']:
-    # Keep only unique nodes from the columns
-    nodelist.extend(file[col].unique().tolist())
 
 # Get edge list from the file
 edgelist = [(row['protein1'], row['protein2']) for index, row in file.iterrows()]
@@ -49,7 +42,6 @@ edgelist = [(row['protein1'], row['protein2']) for index, row in file.iterrows()
 
 # Create graph for the human PPI network
 G = nx.Graph()
-G.add_nodes_from(nodelist)
 G.add_edges_from(edgelist)
     
 # Print the human PPI network info    
@@ -91,4 +83,4 @@ for sub_line in sub_fnames1:
    dataf.to_csv(subgraph_file[:-17]+sub_line[:-9]+'egoedges.csv', index = False, header = True)
    
    # Print the info for subgraphs of each file
-   print("Subgraph_"+sub_line[:-4],nx.info(G_sub))
+   print("Subgraph_"+sub_line[:-4]+'\n',nx.info(G_sub))
