@@ -12,10 +12,10 @@ entered for creation of above csv files.
 @author: debomita
 
 """
-import csv
+
 import pandas as pd
 from tkinter import Tk
-#from tkinter import filedialog
+from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 
 Tk().withdraw()
@@ -40,26 +40,22 @@ for file_name in file_list:
     
     newlines = []
     prot_id = []
-    prot_name = []
     prot_id1 = []
-    prot_name1 = []
-    
+   
     
     for line in lines: 
         if line.startswith(">"):
             line1 = line
             name, ID,info = line1.split("\t")   #splitting each item in list by tab \t to separate names and IDs
-            prot_name.append(name[1:])       #adding protein name without ">" to list prot_name
             prot_id.append(ID)               #adding protein ID to list prot_id
             #storing host virus protein names and ID in dataframe "df"
-            df = pd.DataFrame({'prot_id': prot_id,
-                               'prot_name': prot_name})
+            df = pd.DataFrame({'prot_id': prot_id})
+                               
             if ID[:9] == '9606.ENSP':
-               prot_name1.append(name[1:])       #adding protein name without ">" to list prot_name
                prot_id1.append(ID)               #adding protein ID to list prot_id
                #storing human protein names and ID in dataframe "df1"
-               df1 = pd.DataFrame({'prot_id': prot_id1,
-                                  'prot_name': prot_name1})
+               df1 = pd.DataFrame({'prot_id': prot_id1})
+                                  
                
     
     host_vir_file   = file_name[:-4]+'_host.csv'           
