@@ -41,7 +41,6 @@ def subgr_cent(G,node):
 # Subgraph centrality   
     subgr_centrality1 = nx.subgraph_centrality(G)
     subgr_centrality = subgr_centrality1[node]
-    print(subgr_centrality)
     return(subgr_centrality)
 #****************************************************************************** 
  
