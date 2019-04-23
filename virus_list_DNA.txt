@@ -1,0 +1,19 @@
+Epstein_Barr virus
+Hepatitis B virus
+Human adenovirus C
+Human cytomegalovirus 
+Human herpesvirus 1
+Human herpesvirus 2
+Human herpesvirus 6A
+Human herpesvirus 6B
+Human herpesvirus 8 type P
+Human papillomavirus type 16
+Human papillomavirus type 18
+Human papillomavirus type 1a
+Human papillomavirus type 4
+Human papillomavirus type 5
+Molluscum contagiosum virus
+Orf virus
+Varicella-zoster virus
+Variola virus
+Yaba monkey tumor virus
