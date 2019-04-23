@@ -19,14 +19,14 @@ from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 
 Tk().withdraw()
-# Upload csv file with list of fasta file names
+#Upload csv file with list of fasta file names
 source_file = askopenfilename(title = 'Upload list of fasta filenames',filetypes = (("csv files","*.csv"),("all files","*.*")))
 print(source_file)
 
 # Get destination path for creation of .csv files
 dest_path = filedialog.askdirectory(title = 'Enter path for file generation')
 
-fasta_fn = open(source_file)
+fasta_fn = open(source_file,header = False)
 
 # Get list of fasta file names
 file_list = fasta_fn.readlines()
@@ -37,7 +37,6 @@ for file_name in file_list:
 
     f = open(dest_path+'/'+file_name[:-1]) #reading fasta file
     lines = f.readlines()
-    
     newlines = []
     prot_id = []
     prot_id1 = []
@@ -70,4 +69,3 @@ for file_name in file_list:
     df2 = pd.DataFrame({'fname':gen_file})
     df2.to_csv(dest_path+'/gen_file_list.csv', index=False, header=True)
   
-print("Finished creation of files.\n")
